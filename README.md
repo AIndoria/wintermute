@@ -16,7 +16,11 @@ This actually works fine for the most part. It will still not give you many opin
 
 The bot uses the older curie-001 model. Funnily, it is the most opinionated version of the bot. It is funny, weird, and arguably the most entertaining of the three.
 
-### USAGE
+---
+
+---
+
+## USAGE
 
 - Replace channel names with channels in three places (You can just search for #channel).
 
