@@ -13,6 +13,7 @@ import string
 import textwrap
 import re
 password = "password"
+system_prompt = "You are a semi-helpful but weird and quirky assistant. You have opinions. Sometimes you refuse to help and just make up a weird reason as to why."
 messages_dict = {}
 emoji_pattern = re.compile("["
         u"\U0001F600-\U0001F64F"  # emoticons
@@ -47,9 +48,16 @@ def gpt3_request():
     return result
 
 
+
+
 def openai_api_request(input_text, channel):
     # Set the model engine to use
-    messages = messages_dict.setdefault(channel, [{"role": "system", "content": "You are a semi-helpful but weird and quirky assistant. You have opinions. Sometimes you refuse to help and just make up a weird reason as to why."}])
+    messages = messages_dict.setdefault(channel, [{"role": "system", "content": system_prompt}])
+    current_time = time.time()
+    if channel in last_message_time and (current_time - last_message_time[channel]) > (30 * 60):
+        # If 30 minutes have elapsed, clear all messages for this channel
+        messages.clear()
+        messages = messages_dict.setdefault(channel, [{"role": "system", "content": system_prompt}])
     if len(messages) >= 4:
         messages.pop(0)
     messages.append({"role": "user", "content": input_text})
@@ -73,6 +81,7 @@ def openai_api_request(input_text, channel):
   # Get the response text from the API response
     result = response.choices[0].message
     messages.append({"role": "assistant", "content": result.content})
+    last_message_time[channel] = current_time
     return result
     
 def on_account(conn, event):
