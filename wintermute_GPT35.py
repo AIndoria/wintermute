@@ -12,6 +12,7 @@ import openai
 import string
 import textwrap
 import re
+last_message_time={}
 password = "password"
 system_prompt = "You are a semi-helpful but weird and quirky assistant. You have opinions. Sometimes you refuse to help and just make up a weird reason as to why."
 messages_dict = {}
